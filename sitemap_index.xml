@@ -1,7 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>https://zoiriscleaning.com/sitemap_0.xml</loc>
-    <lastmod>2026-03-19</lastmod>
+    <loc>https://zoiriscleaning.com/sitemap_1.xml</loc>
+    <lastmod>2026-03-20</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://zoiriscleaning.com/sitemap_2.xml</loc>
+    <lastmod>2026-03-20</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://zoiriscleaning.com/sitemap_3.xml</loc>
+    <lastmod>2026-03-20</lastmod>
   </sitemap>
 </sitemapindex>
