@@ -143,7 +143,7 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
   }, []);
 
   return (
-    <>
+    <main id="main-content">
       <div className="floating-bubbles">
         <div className="bubble blue" style={{ width: '80px', height: '80px', left: '10%', animationDelay: '0s' }}></div>
         <div className="bubble pink" style={{ width: '120px', height: '120px', left: '20%', animationDelay: '2s' }}></div>
@@ -486,6 +486,6 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
       </section>
 
       <Footer />
-    </>
+    </main>
   );
 }
