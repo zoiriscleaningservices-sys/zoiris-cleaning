@@ -2,7 +2,7 @@ import cities from '@/data/cities';
 import services from '@/data/services';
 
 export default function sitemap() {
-  const BASE = 'https://zoiriscleaning.com';
+  const BASE = 'https://www.zoiriscleaning.com';
   const now = new Date().toISOString();
 
   const urls = [

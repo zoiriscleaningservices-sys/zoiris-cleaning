@@ -1,6 +1,7 @@
 const allCities = require('all-the-cities');
 const fs = require('fs');
 
+// Get all Alabama cities as before
 const alabamaCities = allCities
   .filter(c => c.loc && c.loc.type === 'Point' && c.country === 'US' && c.adminCode === 'AL')
   .map(c => {
@@ -9,16 +10,34 @@ const alabamaCities = allCities
       slug,
       name: c.name,
       state: 'AL',
-      county: c.adminCode2 || 'Unknown', // Sometimes adminCode2 has county
+      county: c.adminCode2 || 'Unknown',
       pop: c.population || 0
     };
-  })
-  .sort((a, b) => b.pop - a.pop);
+  });
+
+// Get the top ~950 most populated cities in the US overall
+const topUSCities = allCities
+  .filter(c => c.loc && c.loc.type === 'Point' && c.country === 'US')
+  .sort((a, b) => (b.population || 0) - (a.population || 0))
+  .slice(0, 950)
+  .map(c => {
+    const stateCode = c.adminCode ? c.adminCode.toLowerCase() : 'us';
+    const slug = c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + stateCode;
+    return {
+      slug,
+      name: c.name,
+      state: c.adminCode || 'US',
+      county: c.adminCode2 || 'Unknown',
+      pop: c.population || 0
+    };
+  });
+
+const combinedCities = [...alabamaCities, ...topUSCities];
 
 // Deduplicate by slug
 const uniqueSlugs = new Set();
 const finalCities = [];
-for (const city of alabamaCities) {
+for (const city of combinedCities) {
   if (!uniqueSlugs.has(city.slug)) {
     uniqueSlugs.add(city.slug);
     finalCities.push(city);
@@ -52,7 +71,7 @@ for (const ma of manualAdditions) {
 // Re-sort by population
 finalCities.sort((a, b) => b.pop - a.pop);
 
-const fileContent = `// Auto-generated Alabama Cities (Count: ${finalCities.length})
+const fileContent = `// Auto-generated US Cities (Count: ${finalCities.length})
 // Pre-sorted by population to allow Next.js to pre-render the top cities
 
 const cities = ${JSON.stringify(finalCities, null, 2)};

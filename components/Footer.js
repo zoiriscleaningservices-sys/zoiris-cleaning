@@ -2,10 +2,10 @@
 export default function Footer({ currentCitySlug = 'mobile-al' }) {
   return (
     <footer className="bg-gradient-to-b from-gray-900 to-black text-gray-200 py-16 relative overflow-hidden font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Left: Logo & Description */}
         <div className="space-y-6 relative z-10">
-          <a className="flex items-center space-x-3 group" href="/">
+          <a className="flex items-center space-x-3 group" href={currentCitySlug === 'mobile-al' ? '/' : `/${currentCitySlug}/`}>
             <img alt="Zoiris Cleaning Logo"
               className="h-28 w-auto transition-all duration-300 group-hover:scale-105 rounded-full"
               src="/images/logo.png" />
@@ -24,48 +24,11 @@ export default function Footer({ currentCitySlug = 'mobile-al' }) {
           </div>
         </div>
 
-        {/* Middle: Services */}
-        <div className="relative z-10">
-          <h3 className="text-white font-bold text-xl mb-6 tracking-wide border-b border-gray-800 pb-2 inline-block">Our Services</h3>
-          <ul className="space-y-3 text-gray-400">
-            {[
-              [`/${currentCitySlug}/house-cleaning/`, 'fa-broom', 'text-blue-600', 'Residential Cleaning'],
-              [`/${currentCitySlug}/deep-cleaning/`, 'fa-sparkles', 'text-purple-500', 'Deep Cleaning'],
-              [`/${currentCitySlug}/commercial-cleaning/`, 'fa-building', 'text-gray-500', 'Commercial Cleaning'],
-              [`/${currentCitySlug}/airbnb-cleaning/`, 'fa-home', 'text-pink-500', 'Airbnb Cleaning'],
-              [`/${currentCitySlug}/carpet-cleaning/`, 'fa-layer-group', 'text-orange-500', 'Carpet Cleaning'],
-              [`/${currentCitySlug}/window-cleaning/`, 'fa-window-maximize', 'text-cyan-500', 'Window Cleaning'],
-              [`/${currentCitySlug}/move-in-cleaning/`, 'fa-box-open', 'text-yellow-500', 'Move-In Cleaning'],
-              [`/${currentCitySlug}/move-out-cleaning/`, 'fa-door-open', 'text-red-500', 'Move-Out Cleaning'],
-              [`/${currentCitySlug}/post-construction-cleanup/`, 'fa-hard-hat', 'text-yellow-600', 'Post-Construction'],
-              [`/${currentCitySlug}/vacation-rental-cleaning/`, 'fa-umbrella-beach', 'text-teal-500', 'Vacation Rental'],
-              [`/${currentCitySlug}/pressure-washing/`, 'fa-water', 'text-blue-400', 'Pressure Washing'],
-            ].map(([href, icon, color, label]) => (
-              <li key={href}><a className={`hover:text-blue-400 transition-all duration-200 flex items-center group`} href={href}>
-                <i className={`fas ${icon} w-6 ${color} mr-2`}></i> {label}
-              </a></li>
-            ))}
-          </ul>
-        </div>
 
-        {/* Right: Service Areas + Quick Links */}
+        {/* Right: Quick Links */}
         <div className="relative z-10">
-          <h3 className="text-white font-bold text-xl mb-6 tracking-wide border-b border-gray-800 pb-2 inline-block">Service Areas</h3>
-          <div className="bg-gray-900/50 rounded-lg p-4 mb-6 border border-gray-800">
-            <ul className="grid grid-cols-2 gap-2 text-gray-400 text-sm">
-              {['Spanish Fort', 'Saraland', 'Daphne', 'Eight Mile', 'Satsuma', 'Montrose', 'Theodore', 'Semmes',
-                'Creola', 'Stapleton', 'Fairhope', 'Point Clear', 'Loxley', 'Saint Elmo', 'Irvington', 'Wilmer',
-                'Bay Minette', 'Coden', 'Chunchula', 'Silverhill', 'Axis', 'Bucks'].map(city => (
-                  <li key={city}><a className="hover:text-blue-400 transition-colors flex items-center"
-                    href={`/${city.toLowerCase().replace(/ /g, '-')}-al/`}>
-                    <i className="fas fa-map-pin text-xs mr-2 text-red-500"></i> {city}
-                  </a></li>
-                ))}
-            </ul>
-          </div>
-
           <h3 className="text-white font-bold text-lg mb-4 tracking-wide">Quick Links</h3>
-          <ul className="flex flex-wrap gap-4 text-gray-400 text-sm">
+          <ul className="flex flex-wrap gap-4 text-gray-400 text-base">
             {[[currentCitySlug === 'mobile-al' ? '/' : `/${currentCitySlug}/`, 'fa-home', 'Home'], [`/${currentCitySlug}/about/`, 'fa-info-circle', 'About'],
               [`/${currentCitySlug}/blog/`, 'fa-blog', 'Blog'], [`/${currentCitySlug}/contact/`, 'fa-envelope', 'Contact'],
               ['/apply/', 'fa-user-plus', 'Apply'], ['/terms.html', 'fa-file-contract', 'Terms'],

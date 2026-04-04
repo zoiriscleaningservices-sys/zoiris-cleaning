@@ -12,13 +12,17 @@ export async function generateStaticParams() {
   return topCities.map(city => ({ city: city.slug }));
 }
 
-// Rotate through high-converting keywords
+// Rotate through high-converting dynamic intent keywords
 const getTopKeyword = (index, cityObj) => {
+  const intentModifiers = ["Top-rated", "Affordable", "Best", "Same-Day", "Expert", "Professional", "Local", "Eco-friendly"];
+  
+  const intent = intentModifiers[index % intentModifiers.length];
+  
   const keywords = [
-    `Best cleaning services in ${cityObj.name}, AL`,
-    `Affordable cleaning services ${cityObj.name} AL`,
-    `Cleaning services near me in ${cityObj.name}`,
-    `House cleaning near me ${cityObj.name} AL`,
+    `${intent} cleaning services in ${cityObj.name}, AL`,
+    `Affordable cleaning services near ${cityObj.name} AL`,
+    `${intent} house cleaning near me in ${cityObj.name}`,
+    `House cleaning experts ${cityObj.name} AL`,
     `Maid service near me ${cityObj.name}`
   ];
   return keywords[index % keywords.length];
@@ -34,7 +38,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${keywordTitle} | Zoiris Cleaning Services`,
     description: `Looking for ${keywordTitle.toLowerCase()}? Zoiris Cleaning Services offers top-rated residential and commercial cleaning in ${city.name}, AL. Call (251) 930-8621 for a free quote!`,
-    alternates: { canonical: `https://zoiriscleaning.com/${city.slug}/` },
+    alternates: { canonical: `https://www.zoiriscleaning.com/${city.slug}/` },
   };
 }
 

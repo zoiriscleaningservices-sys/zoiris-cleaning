@@ -1,4 +1,5 @@
 import { Inter } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -15,27 +16,27 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
-        <link as="image" fetchPriority="high" href="/images/location_hero.png" rel="preload" />
+        <link as="image" fetchPriority="high" href="/images/hero_mansion_final.png?v=fixed" rel="preload" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
-        <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js" defer></script>
-        
-        <script
+        <Script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js" strategy="lazyOnload" />
+        <Script
+          id="schema-business"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "CleaningService",
               "name": "Zoiris Cleaning Services",
-              "@id": "https://zoiriscleaning.com/#business",
-              "url": "https://zoiriscleaning.com/",
+              "@id": "https://www.zoiriscleaning.com/#business",
+              "url": "https://www.zoiriscleaning.com/",
               "telephone": "+12519308621",
               "priceRange": "$$",
-              "image": "https://zoiriscleaning.com/images/logo.png",
+              "image": "https://www.zoiriscleaning.com/images/logo.png",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Downtown Mobile",
@@ -76,19 +77,20 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        <script
+        <Script
+          id="schema-search"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "Zoiris Cleaning Services",
-              "url": "https://zoiriscleaning.com/",
+              "url": "https://www.zoiriscleaning.com/",
               "potentialAction": {
                 "@type": "SearchAction",
                 "target": {
                   "@type": "EntryPoint",
-                  "urlTemplate": "https://zoiriscleaning.com/mobile-al/{search_term_string}"
+                  "urlTemplate": "https://www.zoiriscleaning.com/mobile-al/{search_term_string}"
                 },
                 "query-input": "required name=search_term_string"
               }
@@ -96,7 +98,8 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        <script
+        <Script
+          id="schema-faq"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({

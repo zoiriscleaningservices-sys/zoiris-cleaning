@@ -111,21 +111,35 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.Swiper) {
-      new window.Swiper(".mySwiper", {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        loop: true,
-        autoplay: { delay: 3000, disableOnInteraction: false },
-        pagination: { el: ".swiper-pagination", clickable: true },
-        navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
-        breakpoints: {
-          640: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-        },
-      });
-    }
+    let swiperInstance = null;
+    
+    const initSwiper = () => {
+      if (typeof window !== 'undefined' && window.Swiper) {
+        // Destroy existing instance if it exists to prevent React Strict Mode duplicates
+        const swiperEl = document.querySelector(".mySwiper");
+        if (swiperEl && swiperEl.swiper) {
+          swiperEl.swiper.destroy(true, true);
+        }
+
+        swiperInstance = new window.Swiper(".mySwiper", {
+          slidesPerView: 1,
+          spaceBetween: 30,
+          loop: true,
+          autoplay: { delay: 4000, disableOnInteraction: false },
+          pagination: { el: ".swiper-pagination", clickable: true },
+          navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+          breakpoints: {
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+          },
+        });
+      } else {
+        // Retry if Swiper tag hasn't loaded yet
+        setTimeout(initSwiper, 500);
+      }
+    };
+    
+    initSwiper();
 
     const scrollToHash = () => {
       if (window.location.hash) {
@@ -141,10 +155,74 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
     };
     // small delay to ensure DOM is ready
     setTimeout(scrollToHash, 100);
+    
+    return () => {
+      if (swiperInstance) {
+        swiperInstance.destroy(true, true);
+      }
+    };
   }, []);
+
+  const schemaOrg = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "@id": `https://www.zoiriscleaning.com/${citySlug}/#localbusiness`,
+        "name": `Zoiris Cleaning Services ${cityName}`,
+        "description": `Professional ${serviceName ? serviceName.toLowerCase() : 'cleaning services'} in ${cityName}, Alabama.`,
+        "url": `https://www.zoiriscleaning.com/${citySlug}/${service ? service.slug + '/' : ''}`,
+        "telephone": "+1-251-220-2515",
+        "priceRange": "$$",
+        "image": "https://www.zoiriscleaning.com/images/logo.png",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": cityName,
+          "addressRegion": "AL",
+          "addressCountry": "US"
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": cityName
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": `Do you provide ${serviceName ? serviceName.toLowerCase() : 'cleaning services'} in ${cityName}, AL?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `Yes, Zoiris Cleaning Services provides top-rated ${serviceName ? serviceName.toLowerCase() : 'cleaning solutions'} throughout ${cityName} and the surrounding areas.`
+            }
+          },
+          {
+            "@type": "Question",
+            "name": `How much does ${serviceName ? serviceName.toLowerCase() : 'cleaning'} cost in ${cityName}?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `The cost of ${serviceName ? serviceName.toLowerCase() : 'cleaning'} in ${cityName} depends on the size of the property and the specific services requested. Contact us at 251-220-2515 for a free, instant quote.`
+            }
+          },
+          {
+            "@type": "Question",
+            "name": `Are your cleaning products safe for pets and children?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `Absolutely. We prioritize the use of eco-friendly, non-toxic cleaning products that are completely safe for your entire family, including pets.`
+            }
+          }
+        ]
+      }
+    ]
+  };
+
+  const [activeFaq, setActiveFaq] = useState(null);
 
   return (
     <main id="main-content">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
       <div className="floating-bubbles">
         <div className="bubble blue" style={{ width: '80px', height: '80px', left: '10%', animationDelay: '0s' }}></div>
         <div className="bubble pink" style={{ width: '120px', height: '120px', left: '20%', animationDelay: '2s' }}></div>
@@ -159,13 +237,14 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
 
 
       {/* Hero Section */}
-      <section className="hero-image min-h-screen pt-24 pb-12 flex items-center justify-center relative" id="home">
-        <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+      <section className="min-h-screen pt-24 pb-12 flex items-center justify-center relative bg-slate-900" id="home">
+        <img src="/images/hero_mansion_final.png?v=fixed3" data-testid="hero-bg-img" alt="Mansion Interior" className="absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0, opacity: 0.7 }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)', zIndex: 0 }}></div>
         <div className="relative text-center px-4 sm:px-6 lg:px-8 max-w-3xl z-10 w-full">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4 animate-fadeIn">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4 animate-fadeIn" style={{ textShadow: "0px 4px 20px rgba(0,0,0,0.9), 0px 2px 5px rgba(0,0,0,1)" }}>
             {h1Text}
           </h1>
-          <p className="text-base md:text-lg text-white font-medium max-w-md mx-auto mb-6 leading-relaxed">
+          <p className="text-base md:text-lg text-white font-medium max-w-md mx-auto mb-6 leading-relaxed" style={{ textShadow: "0px 3px 15px rgba(0,0,0,0.9), 0px 1px 4px rgba(0,0,0,1)" }}>
             <strong>Zoiris Cleaning Service</strong> provides trusted <em>{serviceName ? serviceName.toLowerCase() : 'residential & commercial cleaning'}</em> across <strong>{cityName}, Baldwin County, and nearby cities</strong>. 
             From deep cleans to move-in/out and eco-friendly solutions, we make your space spotless. 
             <span className="font-semibold text-blue-400"> Book online 24/7</span>.
@@ -248,92 +327,134 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="px-6 py-12 relative z-10 bg-white/80 backdrop-blur-sm" id="about">
-        <div className="max-w-4xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 sm:text-4xl">
-            About Zoiris Cleaning Service – {cityName} & Baldwin County Experts
-          </h2>
-          <div className="mt-4 h-1 w-20 bg-blue-600 mx-auto rounded"></div>
-          <p className="mt-4 text-gray-800 text-base md:text-lg leading-relaxed">
-            <strong>Zoiris Cleaning Services</strong> sets the standard for exceptional <em>Cleaning Services in {cityName} and Baldwin County</em>.
-            We provide expert <strong>Cleaning Services {cityName}</strong>, apartment cleaning, office cleaning, thorough deep cleaning, move-in/out services, and eco-friendly options to guarantee your space is immaculate.
-          </p>
-          <div className="flex flex-col md:flex-row items-center mt-12 text-left">
-            <div className="md:w-1/2 mb-8 md:mb-0 md:pr-6">
-              <img alt="Professional eco-friendly cleaning" className="rounded-xl shadow-xl w-full h-auto" src="/images/services_action.png" />
-            </div>
-            <div className="md:w-1/2">
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Our Story</h3>
-              <p className="text-gray-800 text-base md:text-lg mb-4 leading-relaxed">From a small family-run service to one of {cityName}’s most trusted cleaning companies, our mission is simple: provide <strong>affordable, reliable, and high-quality cleaning</strong>.</p>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Why Choose Us</h3>
-              <p className="text-gray-800 text-base md:text-lg mb-4 leading-relaxed">Our team uses <strong>eco-friendly, non-toxic products</strong> and advanced cleaning techniques to ensure a spotless finish every time.</p>
+      {/* Massive Localized SEO Content Hub */}
+      <section className="px-6 py-16 relative z-10 border-y border-white/5" id="about">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white drop-shadow-md tracking-tight">
+              {serviceName ? `Premium ${serviceName} in ${cityName}, Alabama` : `Top-Rated Cleaning Services in ${cityName}, AL`}
+            </h2>
+            <div className="mt-6 h-1 w-24 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+          </div>
+          
+          <article className="prose prose-invert prose-lg max-w-none text-gray-200">
+            <p className="lead text-xl text-gray-100 font-medium mb-8">
+              At <strong>Zoiris Cleaning Services</strong>, we know that finding a reliable, high-quality cleaner in <em>{cityName}</em> can be overwhelmingly difficult. That is exactly why we built our company around a single mission: delivering the most meticulous, spotless, and eco-friendly {serviceName ? serviceName.toLowerCase() : 'residential and commercial cleaning'} solutions across {cityName} and all of Baldwin County.
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-12 items-start mt-12">
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-4">Why Mobile & Baldwin County Choose Us</h3>
+                <p className="mb-6 leading-relaxed">
+                  Whether you are managing a busy household in {cityName}, preparing an apartment for new tenants, or maintaining a massive commercial warehouse, cleanliness directly impacts your quality of life and business reputation. 
+                </p>
+                <p className="leading-relaxed mb-6">
+                  Unlike fly-by-night operations, Zoiris is a fully insured, top-tier cleaning agency. We do not just wipe down surfaces—we perform deep sanitation. Our local {cityName} teams arrive fully equipped with advanced commercial-grade vacuums, heavy-duty degreasers, and non-toxic, pet-safe eco-friendly solutions. 
+                </p>
+                <ul className="space-y-3 mt-4 list-none pl-0">
+                  <li className="flex items-center"><i className="fas fa-check-circle text-blue-400 mr-3"></i> <strong>100% Satisfaction Guarantee</strong> - We don't leave until it's spotless.</li>
+                  <li className="flex items-center"><i className="fas fa-check-circle text-blue-400 mr-3"></i> <strong>Vetted & Insured Staff</strong> - Absolute peace of mind for your property.</li>
+                  <li className="flex items-center"><i className="fas fa-check-circle text-blue-400 mr-3"></i> <strong>Eco-Friendly Products</strong> - Tough on dirt, completely safe for children & pets.</li>
+                  <li className="flex items-center"><i className="fas fa-check-circle text-blue-400 mr-3"></i> <strong>Same-Day Availability</strong> - Fast dispatches across {cityName}.</li>
+                </ul>
+              </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 mt-6">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 bg-blue-100 rounded-full p-3"><i className="fas fa-hand-holding-heart text-blue-600 text-lg"></i></div>
-                  <div className="ml-3"><h4 className="text-base font-semibold text-gray-900">Honesty</h4><p className="mt-1 text-gray-800 text-sm">Clear communication and dependable results.</p></div>
-                </div>
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 bg-blue-100 rounded-full p-3"><i className="fas fa-clock text-blue-600 text-lg"></i></div>
-                  <div className="ml-3"><h4 className="text-base font-semibold text-gray-900">Punctuality</h4><p className="mt-1 text-gray-800 text-sm">We respect your schedule and arrive on time.</p></div>
-                </div>
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 bg-blue-100 rounded-full p-3"><i className="fas fa-leaf text-blue-600 text-lg"></i></div>
-                  <div className="ml-3"><h4 className="text-base font-semibold text-gray-900">Eco-Friendly</h4><p className="mt-1 text-gray-800 text-sm">Safe, non-toxic products for your home.</p></div>
-                </div>
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 bg-blue-100 rounded-full p-3"><i className="fas fa-medal text-blue-600 text-lg"></i></div>
-                  <div className="ml-3"><h4 className="text-base font-semibold text-gray-900">Quality</h4><p className="mt-1 text-gray-800 text-sm">Attention to detail with consistent results.</p></div>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-2xl transform rotate-3"></div>
+                <img alt={`Professional ${serviceName ? serviceName.toLowerCase() : 'cleaners'} working in ${cityName}`} className="rounded-2xl shadow-2xl w-full h-auto border border-white/10 relative z-10" src="/images/services_action.png" />
+                <div className="absolute -bottom-6 -left-6 bg-slate-800 border border-white/10 p-6 rounded-2xl shadow-xl z-20 backdrop-blur-xl">
+                  <div className="flex items-center gap-4">
+                    <div className="text-4xl">🌟</div>
+                    <div>
+                      <p className="text-white font-bold text-lg leading-tight">4.9/5 Average Rating</p>
+                      <p className="text-gray-400 text-sm">Based on 230+ {cityName} Reviews</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+
+            <div className="mt-16 bg-black/40 border border-white/10 p-8 rounded-3xl backdrop-blur-md shadow-2xl shadow-black/50">
+              <h3 className="text-2xl font-bold text-white mb-6 text-center">Comprehensive {serviceName || 'Cleaning'} Solutions Tailored for You</h3>
+              <p className="text-center text-gray-300 max-w-3xl mx-auto mb-8">
+                Every property in {cityName} is unique, which is why we offer completely bespoke cleaning packages. From scrubbing baseboards and high-dusting ceiling fans to sanitizing grout and appliance deep-cleaning, we handle the dirty work so you can reclaim your time.
+              </p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                <div className="p-4 bg-black/30 border border-white/5 rounded-2xl hover:bg-black/50 transition shadow-lg shadow-black/20">
+                  <i className="fas fa-home text-3xl text-blue-400 mb-3"></i>
+                  <h4 className="font-bold text-white">Residential</h4>
+                  <p className="text-sm text-gray-400 mt-2">Recurring maid services for busy families.</p>
+                </div>
+                <div className="p-4 bg-black/30 border border-white/5 rounded-2xl hover:bg-black/50 transition shadow-lg shadow-black/20">
+                  <i className="fas fa-building text-3xl text-purple-400 mb-3"></i>
+                  <h4 className="font-bold text-white">Commercial</h4>
+                  <p className="text-sm text-gray-400 mt-2">Janitorial services for offices & retail.</p>
+                </div>
+                <div className="p-4 bg-black/30 border border-white/5 rounded-2xl hover:bg-black/50 transition shadow-lg shadow-black/20">
+                  <i className="fas fa-broom text-3xl text-emerald-400 mb-3"></i>
+                  <h4 className="font-bold text-white">Deep Cleaning</h4>
+                  <p className="text-sm text-gray-400 mt-2">Heavy-duty sanitation for ignored spaces.</p>
+                </div>
+                <div className="p-4 bg-black/30 border border-white/5 rounded-2xl hover:bg-black/50 transition shadow-lg shadow-black/20">
+                  <i className="fas fa-truck-moving text-3xl text-pink-400 mb-3"></i>
+                  <h4 className="font-bold text-white">Move-In/Out</h4>
+                  <p className="text-sm text-gray-400 mt-2">Score your full security deposit back.</p>
+                </div>
+              </div>
+            </div>
+          </article>
         </div>
       </section>
 
       {/* Services Section */}
-      <section className="py-16 relative z-10 bg-gray-50/90 backdrop-blur-md" id="services">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6">
-            Professional Cleaning Services for Homes & Businesses
-          </h2>
-          <p className="text-center text-gray-800 max-w-3xl mx-auto mb-12">
-            Zoiris Cleaning Service delivers trusted <strong>residential and commercial cleaning</strong> solutions. Whether you need a one-time detail clean or recurring services, we make every home and business shine in {cityName}.
-          </p>
+      <section className="py-24 relative z-10" id="services">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16" data-aos="fade-up">
+            <span className="px-5 py-2 bg-blue-500/20 border border-blue-400/30 text-blue-200 rounded-3xl text-sm font-bold tracking-widest shadow-sm">OUR SERVICES</span>
+            <h2 className="text-4xl md:text-5xl font-extrabold mt-6 text-white drop-shadow-md">Professional Cleaning Services in {cityName}</h2>
+            <p className="mt-5 text-gray-200 max-w-2xl mx-auto text-lg leading-relaxed shadow-sm">
+              Zoiris Cleaning Service delivers trusted <strong className="text-white drop-shadow-sm">residential and commercial cleaning</strong> solutions. Whether you need a one-time detail clean or recurring services, we make every space shine.
+            </p>
+          </div>
 
-          <div className="swiper mySwiper rounded-xl overflow-hidden shadow-2xl">
-            <div className="swiper-wrapper">
-              {SWIPER_SLIDES.map((slide, index) => (
-                <div key={index} className="swiper-slide bg-white rounded-xl shadow-md border border-gray-100">
-                  <div className="block h-full">
-                    <img alt={slide.name} className="h-48 w-full object-cover" src={`/images/services/${slide.img}`} />
-                    <div className="p-6">
-                      <div className="flex items-center justify-center mb-4">
-                        <i className={`fa-solid ${slide.icon} text-3xl text-blue-600`}></i>
-                      </div>
-                      <h3 className="font-bold text-xl mb-2 text-center text-gray-900">{slide.name}</h3>
-                      <p className="text-sm text-center mb-4 text-gray-600 h-10">{slide.desc}</p>
-                      <div className="text-center mt-4">
-                        <Link href={`/${citySlug}/${slide.slug}/`} className="text-blue-600 hover:text-purple-600 font-bold transition">
-                          Learn More <i className="fa-solid fa-arrow-right ml-1"></i>
+          <div className="relative w-full overflow-visible px-4">
+            <div className="swiper mySwiper pb-14 pt-4">
+              <div className="swiper-wrapper">
+                {SWIPER_SLIDES.map((slide, index) => (
+                  <div key={index} className="swiper-slide">
+                    <div className="card_box group h-[450px] sm:h-[550px] w-full" data-aos="fade-up" data-aos-delay={(index % 3) * 100}>
+                      <span className="card_box_ribbon"></span>
+                      <img src={`/images/services/${slide.img}`} className="w-full h-full object-cover absolute inset-0 z-0 opacity-80 group-hover:scale-110 group-hover:opacity-100 transition-all duration-700" alt={slide.name} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent z-0"></div>
+                      <div className="relative z-10 p-6 md:p-8 flex flex-col h-full justify-end items-start w-full">
+                        <i className={`fa-solid ${slide.icon} text-4xl text-white/50 mb-3 absolute top-6 right-6 group-hover:text-white/80 transition-colors`}></i>
+                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 drop-shadow-md">{slide.name}</h3>
+                        <p className="text-gray-200 text-sm md:text-base mb-6 line-clamp-3">{slide.desc}</p>
+                        
+                        <Link href={`/${citySlug}/${slide.slug}/`} className="button05 mt-auto sm:mt-4 inline-flex">
+                          <span className="button05_text">Learn More</span>
+                          <span className="button05_icon-wrap">
+                            <span className="button05_dot"></span><span className="button05_dot"></span><span className="button05_dot"></span>
+                            <i className="fa-solid fa-arrow-right ml-1 text-xs"></i>
+                          </span>
                         </Link>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <div className="swiper-pagination mt-8"></div>
             </div>
-            <div className="swiper-button-next text-blue-600 !right-2"></div>
-            <div className="swiper-button-prev text-blue-600 !left-2"></div>
-            <div className="swiper-pagination"></div>
+            {/* Nav buttons placed outside wrapper for better look */}
+            <div className="swiper-button-prev hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -ml-6 z-20"></div>
+            <div className="swiper-button-next hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 -mr-6 z-20"></div>
           </div>
         </div>
       </section>
 
       {/* FUTURISTIC CONTACT FORM SECTION */}
-      <section id="quote" className="relative py-20 overflow-hidden scroll-mt-28 z-10" style={{ background: 'linear-gradient(135deg,#0a0a1a 0%,#0d1b3e 50%,#0a0a1a 100%)' }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(96,165,250,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,0.05) 1px,transparent 1px)', backgroundSize: '50px 50px', pointerEvents: 'none' }}></div>
+      <section id="quote" className="relative py-20 overflow-hidden scroll-mt-28 z-10">
         <div style={{ position: 'absolute', top: '-100px', left: '-100px', width: '400px', height: '400px', background: 'radial-gradient(circle,rgba(102,126,234,0.2) 0%,transparent 70%)', pointerEvents: 'none', animation: 'zcs-orb 6s ease-in-out infinite' }}></div>
         <div style={{ position: 'absolute', bottom: '-100px', right: '-100px', width: '500px', height: '500px', background: 'radial-gradient(circle,rgba(167,139,250,0.15) 0%,transparent 70%)', pointerEvents: 'none', animation: 'zcs-orb 8s ease-in-out infinite reverse' }}></div>
 
@@ -350,7 +471,7 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
           <div className="grid lg:grid-cols-5 gap-10 items-start">
             {/* Form */}
             <div className="lg:col-span-3">
-              <div className="relative bg-white/[0.03] border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-[0_0_60px_rgba(102,126,234,0.09)]">
+              <div className="relative bg-black/40 border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-2xl shadow-black/50">
                 
                 {quoteFormStatus === 'idle' || quoteFormStatus === 'sending' ? (
                   <form onSubmit={handleQuoteSubmit} className="grid gap-4" autoComplete="off">
@@ -446,6 +567,45 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* Dynamic FAQ Section for Local SEO Dominance */}
+      <section className="py-20 relative z-10 border-t border-white/5" id="faqs">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-12" data-aos="fade-up">
+            <span className="px-5 py-2 bg-purple-500/20 border border-purple-400/30 text-purple-200 rounded-3xl text-sm font-bold tracking-widest shadow-sm">FAQS</span>
+            <h2 className="text-3xl md:text-5xl font-extrabold mt-6 text-white drop-shadow-md">Frequently Asked Questions</h2>
+            <p className="mt-4 text-gray-300 mx-auto text-lg">
+              Everything you need to know about our <strong className="text-white drop-shadow-sm">{serviceName || 'Cleaning Services'}</strong> in {cityName}.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {[
+              { q: `Do you provide ${serviceName ? serviceName.toLowerCase() : 'cleaning services'} in ${cityName}, AL?`, a: `Yes, Zoiris Cleaning Services provides top-rated ${serviceName ? serviceName.toLowerCase() : 'cleaning solutions'} throughout ${cityName} and the surrounding areas.` },
+              { q: `How much does ${serviceName ? serviceName.toLowerCase() : 'cleaning'} cost in ${cityName}?`, a: `The cost of ${serviceName ? serviceName.toLowerCase() : 'cleaning'} in ${cityName} depends on the size of the property and the specific services requested. Contact us at 251-220-2515 for a free, instant quote.` },
+              { q: `Are your cleaning products safe for pets and children?`, a: `Absolutely. We prioritize the use of eco-friendly, non-toxic cleaning products that are completely safe for your entire family, including pets.` },
+              { q: `Do I need to supply the equipment for my ${serviceName ? serviceName.toLowerCase() : 'cleaning'} appointment?`, a: `No, our ${cityName} cleaning teams arrive fully equipped with commercial-grade vacuums, mops, and eco-friendly supplies to complete the job to perfection.` }
+            ].map((faq, idx) => (
+              <div key={idx} className="bg-black/40 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md shadow-xl shadow-black/40 transition-all duration-300 hover:bg-black/60">
+                <button 
+                  onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+                  className="w-full text-left px-6 py-5 flex justify-between items-center focus:outline-none"
+                >
+                  <span className="font-bold text-white text-lg pr-4">{faq.q}</span>
+                  <div className={`w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 transition-transform duration-300 ${activeFaq === idx ? 'rotate-180 bg-blue-500/30 text-blue-300' : 'text-gray-400'}`}>
+                    <i className="fas fa-chevron-down"></i>
+                  </div>
+                </button>
+                <div className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${activeFaq === idx ? 'max-h-48 pb-5 opacity-100' : 'max-h-0 opacity-0'}`}>
+                  <p className="text-gray-300 leading-relaxed border-t border-white/10 pt-4 mt-2">
+                    {faq.a}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -23,16 +23,24 @@ export async function generateStaticParams() {
 
 // Generate the ultimate high-converting SEO keyword mix
 const getTopKeyword = (cityObj, serviceObj) => {
+  const intentModifiers = ["Top-rated", "Affordable", "Best", "Same-Day", "Expert", "Professional", "Local", "Eco-friendly"];
+  const locationModifiers = [`in ${cityObj.name}`, `near ${cityObj.name} AL`, `${cityObj.name} area`, `around ${cityObj.name}`];
+  
+  // Stable pseudo-random selection based on slugs
+  const num1 = cityObj.slug.length + serviceObj.slug.length;
+  const num2 = cityObj.name.length * serviceObj.name.length;
+  
+  const intent = intentModifiers[num1 % intentModifiers.length];
+  const loc = locationModifiers[num2 % locationModifiers.length];
+  
   const rawKeywords = [
-    `Best ${serviceObj.name.toLowerCase()} in ${cityObj.name}`,
-    `Affordable ${serviceObj.name.toLowerCase()} in ${cityObj.name} AL`,
-    `${serviceObj.name} near me in ${cityObj.name}`,
-    `Top-rated ${serviceObj.name.toLowerCase()} ${cityObj.name}`,
-    `${cityObj.name} ${serviceObj.name.toLowerCase()} company`
+    `${intent} ${serviceObj.name.toLowerCase()} ${loc}`,
+    `${serviceObj.name} ${loc}`,
+    `${cityObj.name} ${serviceObj.name.toLowerCase()} company`,
+    `${intent} ${cityObj.name} ${serviceObj.name.toLowerCase()}`
   ];
-  // Stable random selection based on slugs
-  const index = cityObj.slug.length + serviceObj.slug.length;
-  return rawKeywords[index % rawKeywords.length];
+  
+  return rawKeywords[(num1 + num2) % rawKeywords.length];
 };
 
 export async function generateMetadata({ params }) {
@@ -46,7 +54,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${keywordTitle} | Zoiris Cleaning Services`,
     description: `Looking for ${keywordTitle.toLowerCase()}? Zoiris Cleaning Services provides professional, eco-friendly ${service.name.toLowerCase()} for homes and businesses in ${city.name}, AL. Call (251) 930-8621!`,
-    alternates: { canonical: `https://zoiriscleaning.com/${city.slug}/${service.slug}/` },
+    alternates: { canonical: `https://www.zoiriscleaning.com/${city.slug}/${service.slug}/` },
   };
 }
 
