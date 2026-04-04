@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-export default function Header() {
+export default function Header({ currentCitySlug = 'mobile-al' }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [mobileLocationsOpen, setMobileLocationsOpen] = useState(false);
@@ -24,14 +24,14 @@ export default function Header() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-20">
               <div className="flex items-center">
-                <Link href="/" className="flex-shrink-0 cursor-pointer">
+                <Link href={currentCitySlug === 'mobile-al' ? '/' : `/${currentCitySlug}/`} className="flex-shrink-0 cursor-pointer">
                   <img src="/images/logo.png" alt="Zoiris Cleaning service" className="h-28 w-auto transform hover:scale-105 transition duration-300" />
                 </Link>
               </div>
 
               <div className="flex items-center space-x-8 ml-auto">
-                <Link href="/" className="contact-button text-lg">Home</Link>
-                <Link href="/mobile-al/about/" className="contact-button text-lg">About</Link>
+                <Link href={currentCitySlug === 'mobile-al' ? '/' : `/${currentCitySlug}/`} className="contact-button text-lg">Home</Link>
+                <Link href={`/${currentCitySlug}/about/`} className="contact-button text-lg">About</Link>
 
                 {/* SERVICES Dropdown */}
                 <div className="relative group inline-block">
@@ -41,43 +41,43 @@ export default function Header() {
                   <div className="absolute -left-32 top-full hidden group-hover:grid grid-cols-3 gap-4 w-[900px] z-[999] pt-2">
                     <div className="flex flex-col space-y-2 bg-white/95 p-4 rounded-xl shadow-2xl backdrop-blur-md border border-gray-200">
                       <h4 className="text-xl font-bold text-gray-900 border-b-2 border-indigo-500 pb-2 mb-2 text-center">Residential & Property</h4>
-                      <Link href="/mobile-al/house-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">House Cleaning</Link>
-                      <Link href="/mobile-al/deep-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Deep Cleaning</Link>
-                      <Link href="/mobile-al/move-in-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Move-In Cleaning</Link>
-                      <Link href="/mobile-al/move-out-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Move-Out Cleaning</Link>
-                      <Link href="/mobile-al/carpet-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Carpet Cleaning</Link>
-                      <Link href="/mobile-al/window-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Window Cleaning</Link>
-                      <Link href="/mobile-al/pressure-washing/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Pressure Washing</Link>
-                      <Link href="/mobile-al/luxury-estate-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Luxury Estate Cleaning</Link>
-                      <Link href="/mobile-al/laundry-services/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Laundry Services</Link>
-                      <Link href="/mobile-al/Detailing-Mobile-AL/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Detailing</Link>
+                      <Link href={`/${currentCitySlug}/house-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">House Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/deep-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Deep Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/move-in-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Move-In Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/move-out-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Move-Out Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/carpet-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Carpet Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/window-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Window Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/pressure-washing/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Pressure Washing</Link>
+                      <Link href={`/${currentCitySlug}/luxury-estate-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Luxury Estate Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/laundry-services/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Laundry Services</Link>
+                      <Link href={`/${currentCitySlug}/Detailing-Mobile-AL/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Detailing</Link>
                     </div>
 
                     <div className="flex flex-col space-y-2 bg-white/95 p-4 rounded-xl shadow-2xl backdrop-blur-md border border-gray-200">
                       <h4 className="text-xl font-bold text-gray-900 border-b-2 border-purple-500 pb-2 mb-2 text-center">Commercial & Industrial</h4>
-                      <Link href="/mobile-al/commercial-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Commercial Cleaning</Link>
-                      <Link href="/mobile-al/office-janitorial-services/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Office Janitorial Services</Link>
-                      <Link href="/mobile-al/janitorial-cleaning-services/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Janitorial Cleaning Services</Link>
-                      <Link href="/mobile-al/medical-dental-facility-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Medical Facility Cleaning</Link>
-                      <Link href="/mobile-al/industrial-warehouse-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Industrial & Warehouse Cleaning</Link>
-                      <Link href="/mobile-al/floor-stripping-waxing/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Floor Stripping & Waxing</Link>
-                      <Link href="/mobile-al/gym-fitness-center-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Gym & Fitness Center Cleaning</Link>
-                      <Link href="/mobile-al/school-daycare-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">School & Daycare Cleaning</Link>
-                      <Link href="/mobile-al/church-worship-center-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Church & Worship Cleaning</Link>
-                      <Link href="/mobile-al/solar-panel-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Solar Panel Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/commercial-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Commercial Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/office-janitorial-services/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Office Janitorial Services</Link>
+                      <Link href={`/${currentCitySlug}/janitorial-cleaning-services/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Janitorial Cleaning Services</Link>
+                      <Link href={`/${currentCitySlug}/medical-dental-facility-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Medical Facility Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/industrial-warehouse-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Industrial & Warehouse Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/floor-stripping-waxing/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Floor Stripping & Waxing</Link>
+                      <Link href={`/${currentCitySlug}/gym-fitness-center-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Gym & Fitness Center Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/school-daycare-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">School & Daycare Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/church-worship-center-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Church & Worship Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/solar-panel-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Solar Panel Cleaning</Link>
                     </div>
 
                     <div className="flex flex-col space-y-2 bg-white/95 p-4 rounded-xl shadow-2xl backdrop-blur-md border border-gray-200">
                       <h4 className="text-xl font-bold text-gray-900 border-b-2 border-pink-500 pb-2 mb-2 text-center">Property Management</h4>
-                      <Link href="/mobile-al/vacation-rental-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Vacation Rental Cleaning</Link>
-                      <Link href="/mobile-al/airbnb-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Airbnb Cleaning</Link>
-                      <Link href="/mobile-al/airbnb-vacation-rental-management/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Airbnb & Rental Management</Link>
-                      <Link href="/mobile-al/post-construction-cleanup/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Post-Construction Cleanup</Link>
-                      <Link href="/mobile-al/property-management-janitorial/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Property Management Janitorial</Link>
-                      <Link href="/mobile-al/property-maintenance/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Property Maintenance</Link>
-                      <Link href="/mobile-al/home-watch-services/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Home Watch Services</Link>
-                      <Link href="/mobile-al/luxury-estate-management/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Luxury Estate Management</Link>
-                      <Link href="/mobile-al/gutter-cleaning/" className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Gutter Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/vacation-rental-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Vacation Rental Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/airbnb-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Airbnb Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/airbnb-vacation-rental-management/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Airbnb & Rental Management</Link>
+                      <Link href={`/${currentCitySlug}/post-construction-cleanup/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Post-Construction Cleanup</Link>
+                      <Link href={`/${currentCitySlug}/property-management-janitorial/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Property Management Janitorial</Link>
+                      <Link href={`/${currentCitySlug}/property-maintenance/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Property Maintenance</Link>
+                      <Link href={`/${currentCitySlug}/home-watch-services/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Home Watch Services</Link>
+                      <Link href={`/${currentCitySlug}/luxury-estate-management/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Luxury Estate Management</Link>
+                      <Link href={`/${currentCitySlug}/gutter-cleaning/`} className="contact-button text-sm hover:scale-105 transition-transform text-center py-2">Gutter Cleaning</Link>
                     </div>
                   </div>
                 </div>
@@ -96,8 +96,8 @@ export default function Header() {
                   </div>
                 </div>
 
-                <Link href="/mobile-al/blog/" className="contact-button text-lg">Blog</Link>
-                <Link href="/mobile-al/contact/" className="contact-button text-lg">Contact</Link>
+                <Link href={`/${currentCitySlug}/blog/`} className="contact-button text-lg">Blog</Link>
+                <Link href={`/${currentCitySlug}/contact/`} className="contact-button text-lg">Contact</Link>
                 <a href="#quote" className="contact-button text-lg bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-full shadow-lg shadow-blue-500/30">Get a Quote</a>
               </div>
             </div>
@@ -108,7 +108,7 @@ export default function Header() {
         <nav className="md:hidden w-full relative z-[999] bg-transparent">
           <div className="px-4 py-2 flex justify-between items-center bg-gradient-to-b from-black/50 to-transparent">
             <div className="flex items-center">
-              <Link href="/" className="flex-shrink-0 cursor-pointer">
+              <Link href={currentCitySlug === 'mobile-al' ? '/' : `/${currentCitySlug}/`} className="flex-shrink-0 cursor-pointer">
                 <img src="/images/logo.png" alt="Zoiris Cleaning" className="h-24 w-auto drop-shadow-md" />
               </Link>
             </div>
@@ -126,7 +126,7 @@ export default function Header() {
         {/* Full-Screen Mobile Menu Drawer */}
         <div className={`md:hidden fixed inset-0 bg-gradient-to-br from-gray-900 to-black w-full h-[100dvh] overflow-y-auto z-[99999] transition-opacity duration-300 flex flex-col ${mobileMenuOpen ? 'opacity-100 block' : 'opacity-0 hidden'}`}>
           <div className="px-4 py-3 flex justify-between items-center border-b border-white/10 shrink-0">
-            <Link href="/" className="flex-shrink-0 cursor-pointer" onClick={toggleMobileMenu}>
+            <Link href={currentCitySlug === 'mobile-al' ? '/' : `/${currentCitySlug}/`} className="flex-shrink-0 cursor-pointer" onClick={toggleMobileMenu}>
               <img src="/images/logo.png" alt="Zoiris Cleaning" className="h-20 w-auto drop-shadow-md" />
             </Link>
             <button onClick={toggleMobileMenu} className="text-white hover:text-pink-400 transition-colors duration-300 p-2 mr-2">
@@ -135,14 +135,14 @@ export default function Header() {
           </div>
 
           <div className="px-4 py-6 space-y-3 flex-grow pb-24">
-            <Link href="/" onClick={toggleMobileMenu} className="block px-4 py-4 text-xl font-medium text-white hover:text-blue-400 hover:bg-white/10 rounded-2xl transition duration-300 flex items-center group cursor-pointer">
+            <Link href={currentCitySlug === 'mobile-al' ? '/' : `/${currentCitySlug}/`} onClick={toggleMobileMenu} className="block px-4 py-4 text-xl font-medium text-white hover:text-blue-400 hover:bg-white/10 rounded-2xl transition duration-300 flex items-center group cursor-pointer">
               <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
                 <i className="fas fa-home text-blue-400 group-hover:text-pink-400 text-xl transition-colors duration-300"></i>
               </div>
               <span className="ml-5 tracking-wide">Home</span>
             </Link>
 
-            <Link href="/mobile-al/about/" onClick={toggleMobileMenu} className="block px-4 py-4 text-xl font-medium text-white hover:text-blue-400 hover:bg-white/10 rounded-2xl transition duration-300 flex items-center group cursor-pointer">
+            <Link href={`/${currentCitySlug}/about/`} onClick={toggleMobileMenu} className="block px-4 py-4 text-xl font-medium text-white hover:text-blue-400 hover:bg-white/10 rounded-2xl transition duration-300 flex items-center group cursor-pointer">
               <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
                 <i className="fas fa-info-circle text-blue-400 group-hover:text-pink-400 text-xl transition-colors duration-300"></i>
               </div>
@@ -168,18 +168,18 @@ export default function Header() {
                   <div className="mb-2">
                     <h4 className="text-blue-400 font-bold text-sm uppercase tracking-wider mb-2 flex items-center"><i className="fas fa-home mr-2 text-pink-400"></i> Residential</h4>
                     <div className="space-y-2 pl-6 border-l-2 border-blue-500/20">
-                      <Link href="/mobile-al/house-cleaning/" onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">House Cleaning</Link>
-                      <Link href="/mobile-al/deep-cleaning/" onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Deep Cleaning</Link>
-                      <Link href="/mobile-al/move-in-cleaning/" onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Move-In Cleaning</Link>
-                      <Link href="/mobile-al/move-out-cleaning/" onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Move-Out Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/house-cleaning/`} onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">House Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/deep-cleaning/`} onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Deep Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/move-in-cleaning/`} onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Move-In Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/move-out-cleaning/`} onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Move-Out Cleaning</Link>
                     </div>
                   </div>
                   {/* Commercial */}
                   <div className="mb-2 mt-4">
                     <h4 className="text-purple-400 font-bold text-sm uppercase tracking-wider mb-2 flex items-center"><i className="fas fa-building mr-2 text-pink-400"></i> Commercial</h4>
                     <div className="space-y-2 pl-6 border-l-2 border-purple-500/20">
-                      <Link href="/mobile-al/commercial-cleaning/" onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Commercial Cleaning</Link>
-                      <Link href="/mobile-al/office-janitorial-services/" onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Office Janitorial</Link>
+                      <Link href={`/${currentCitySlug}/commercial-cleaning/`} onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Commercial Cleaning</Link>
+                      <Link href={`/${currentCitySlug}/office-janitorial-services/`} onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Office Janitorial</Link>
                     </div>
                   </div>
                 </div>
@@ -200,20 +200,20 @@ export default function Header() {
                 </div>
               </button>
               <div className={`${mobileLocationsOpen ? 'block' : 'hidden'} pl-16 pr-4 py-4 space-y-3 mt-1 bg-black/50 backdrop-blur-md rounded-b-2xl border-t border-white/5`}>
-                <Link href="/mobile-al/" onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Mobile</Link>
+                <Link href={`/${currentCitySlug}/`} onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Mobile</Link>
                 <Link href="/daphne-al/" onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Daphne</Link>
                 <Link href="/fairhope-al/" onClick={toggleMobileMenu} className="block py-2 text-gray-300 hover:text-white hover:translate-x-2 transition duration-300 text-sm">Fairhope</Link>
               </div>
             </div>
 
-            <Link href="/mobile-al/blog/" onClick={toggleMobileMenu} className="block px-4 py-4 text-xl font-medium text-white hover:text-blue-400 hover:bg-white/10 rounded-2xl transition duration-300 flex items-center group cursor-pointer">
+            <Link href={`/${currentCitySlug}/blog/`} onClick={toggleMobileMenu} className="block px-4 py-4 text-xl font-medium text-white hover:text-blue-400 hover:bg-white/10 rounded-2xl transition duration-300 flex items-center group cursor-pointer">
               <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
                 <i className="fas fa-blog text-blue-400 group-hover:text-pink-400 text-xl transition-colors duration-300"></i>
               </div>
               <span className="ml-5 tracking-wide">Blog</span>
             </Link>
 
-            <Link href="/mobile-al/contact/" onClick={toggleMobileMenu} className="block px-4 py-4 text-xl font-medium text-white hover:text-blue-400 hover:bg-white/10 rounded-2xl transition duration-300 flex items-center group cursor-pointer">
+            <Link href={`/${currentCitySlug}/contact/`} onClick={toggleMobileMenu} className="block px-4 py-4 text-xl font-medium text-white hover:text-blue-400 hover:bg-white/10 rounded-2xl transition duration-300 flex items-center group cursor-pointer">
               <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
                 <i className="fas fa-envelope text-blue-400 group-hover:text-pink-400 text-xl transition-colors duration-300"></i>
               </div>

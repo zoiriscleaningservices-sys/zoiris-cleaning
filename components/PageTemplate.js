@@ -152,7 +152,7 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
         <div className="bubble green" style={{ width: '90px', height: '90px', left: '85%', animationDelay: '3s' }}></div>
       </div>
 
-      <Header />
+      <Header currentCitySlug={city?.slug || 'mobile-al'} />
 
       {/* Service Area Finder Nav */}
       <div className="container mx-auto px-6 py-4 flex justify-between items-center relative z-10">
@@ -485,7 +485,7 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
         </div>
       </section>
 
-      <Footer />
+      <Footer currentCitySlug={city?.slug || 'mobile-al'} />
     </main>
   );
 }
