@@ -92,17 +92,7 @@ export default function Header() {
                     <Link href="/fairhope-al/" className="contact-button text-lg hover:bg-blue-700">Fairhope</Link>
                     <Link href="/foley-al/" className="contact-button text-lg hover:bg-blue-700">Foley</Link>
                     <Link href="/gulf-shores-al/" className="contact-button text-lg hover:bg-blue-700">Gulf Shores</Link>
-                    <Link href="/skyline-al/" className="contact-button text-lg hover:bg-blue-700">Skyline</Link>
-                    <Link href="/stevenson-al/" className="contact-button text-lg hover:bg-blue-700">Stevenson</Link>
-                    <Link href="/cherokee-al/" className="contact-button text-lg hover:bg-blue-700">Cherokee</Link>
-                    <Link href="/altoona-al/" className="contact-button text-lg hover:bg-blue-700">Altoona</Link>
-                    <Link href="/ohatchee-al/" className="contact-button text-lg hover:bg-blue-700">Ohatchee</Link>
-                    <Link href="/elba-al/" className="contact-button text-lg hover:bg-blue-700">Elba</Link>
                     <Link href="/saraland-al/" className="contact-button text-lg hover:bg-blue-700">Saraland</Link>
-                    <Link href="/gardendale-al/" className="contact-button text-lg hover:bg-blue-700">Gardendale</Link>
-                    <Link href="/columbia-al/" className="contact-button text-lg hover:bg-blue-700">Columbia</Link>
-                    <Link href="/pollard-al/" className="contact-button text-lg hover:bg-blue-700">Pollard</Link>
-                    <Link href="/fort-payne-al/" className="contact-button text-lg hover:bg-blue-700">Fort Payne</Link>
                   </div>
                 </div>
 
