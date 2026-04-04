@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Header from './Header';
 import Footer from './Footer';
+import ZipFinder from './ZipFinder';
 
 const SWIPER_SLIDES = [
   { slug: 'industrial-warehouse-cleaning', name: 'Industrial & Warehouse Cleaning', icon: 'fa-warehouse', desc: 'Heavy-duty cleaning designed for warehouses and factories.', img: 'industrial_warehouse_cleaning.jpg' },
@@ -154,44 +155,8 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
 
       <Header currentCitySlug={city?.slug || 'mobile-al'} />
 
-      {/* Service Area Finder Nav */}
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center relative z-10">
-        <div></div>
-        <div className="flex items-center">
-          <button className="bg-gray-900 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-700 contact-button text-lg transition" onClick={() => setFinderOpen(true)}>
-            <i className="fa-solid fa-location-dot animate-pulse"></i> Service Area Finder
-          </button>
-        </div>
-      </div>
+      <ZipFinder />
 
-      {/* ZIP Finder Modal */}
-      {finderOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[99999]" onClick={() => setFinderOpen(false)}>
-          <div className="contact-button text-lg rounded-2xl shadow-xl w-full max-w-lg p-8 text-center relative bg-white m-4" onClick={e => e.stopPropagation()}>
-            <button className="absolute top-3 right-3 text-gray-900 hover:text-black text-4xl font-bold transition" onClick={() => setFinderOpen(false)}>×</button>
-            <h2 className="text-3xl font-extrabold text-black mb-4">Service Availability in {cityName}, AL</h2>
-            <p className="text-black mb-6 leading-relaxed">Enter your details below to check if <strong>ZOIRIS Cleaning</strong> serves your area.</p>
-            
-            {!showMap && (
-              <form className="space-y-3" onSubmit={handleFinderSubmit}>
-                <div className="flex space-x-2"><input className="flex-1 border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-400" name="name" placeholder="Enter Name" required type="text" /></div>
-                <div className="flex space-x-2"><input className="flex-1 border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-400" name="phone" placeholder="Enter Phone" required type="tel" /></div>
-                <div className="flex space-x-2"><input className="flex-1 border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-400" maxLength="5" name="zipcode" placeholder="Enter ZIP Code" required type="text" /></div>
-                <button className="bg-neutral-950 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-900 w-full" type="submit">Check</button>
-              </form>
-            )}
-            
-            {showMap && (
-              <div>
-                <p className={`mt-6 text-lg font-bold ${zipError ? 'text-red-600' : 'text-green-600'}`}>{zipResult}</p>
-                <div className="mt-6">
-                  <iframe src={mapUrl} height="300" style={{ width: '100%', border: 0, borderRadius: '12px' }} title="Map"></iframe>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Hero Section */}
       <section className="hero-image min-h-screen pt-24 pb-12 flex items-center justify-center relative" id="home">
