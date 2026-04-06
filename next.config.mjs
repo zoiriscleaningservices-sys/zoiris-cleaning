@@ -3,6 +3,7 @@ const nextConfig = {
   images: {
     domains: ['zoiriscleaning.com', 'www.zoiriscleaning.com', 'imgur.com'],
   },
+  trailingSlash: true,
 };
 
 export default nextConfig;

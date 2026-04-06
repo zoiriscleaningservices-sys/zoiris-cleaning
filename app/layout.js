@@ -68,10 +68,10 @@ export default function RootLayout({ children }) {
               ],
               "aggregateRating": {
                 "@type": "AggregateRating",
-                "ratingValue": "4.9",
-                "reviewCount": "232",
-                "bestRating": "5",
-                "worstRating": "1"
+                "ratingValue": 4.9,
+                "reviewCount": 232,
+                "bestRating": 5,
+                "worstRating": 1
               }
             })
           }}
@@ -98,58 +98,7 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        <Script
-          id="schema-faq"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": [
-                {
-                  "@type": "Question",
-                  "name": "How often should I get my house cleaned in Mobile, AL?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Most homeowners in Mobile, AL schedule house cleaning every 2 weeks. Zoiris Cleaning Services also offers weekly, bi-weekly, and monthly plans. Call 251-220-2515 to find the right schedule for you."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "How much does house cleaning cost in Mobile, AL?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "House cleaning in Mobile, AL typically ranges from $120–$280 depending on home size and frequency. Zoiris Cleaning Services offers competitive pricing with no hidden fees. Get a free quote at zoiriscleaning.com."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Do you bring your own cleaning supplies?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes! Zoiris Cleaning Services brings all professional-grade, eco-friendly supplies. You don't need to provide anything — just unlock the door and we'll handle the rest."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Can I get same-day house cleaning in Mobile, AL?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, Zoiris Cleaning Services offers same-day house cleaning in Mobile, AL based on availability. Call 251-220-2515 now to check open slots today."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "What is included in a standard house cleaning?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Our standard house cleaning includes vacuuming, mopping, dusting, bathroom sanitation, kitchen wipe-down, and trash removal. Ask about our deep cleaning add-on for extra detail."
-                  }
-                }
-              ]
-            })
-          }}
-        />
+
       </head>
       <body className={`min-h-screen overflow-x-hidden ${inter.className}`}>
         {children}
