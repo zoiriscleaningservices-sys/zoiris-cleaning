@@ -65,14 +65,7 @@ export default function RootLayout({ children }) {
                 "https://x.com/zoiriscleaning",
                 "https://www.yelp.com/biz/zoiris-cleaning-service-mobile",
                 "https://www.linkedin.com/in/zoiriscleaning-services-b5b0b2381/"
-              ],
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": 4.9,
-                "reviewCount": 232,
-                "bestRating": 5,
-                "worstRating": 1
-              }
+              ]
             })
           }}
         />
