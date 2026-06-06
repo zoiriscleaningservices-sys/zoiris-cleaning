@@ -66,7 +66,7 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
     e.target.style.display = 'none';
 
     try {
-      fetch("https://formspree.io/f/meolzlll", { method: "POST", body: data });
+      // Formspree and LeadConnector removed per user request
     } catch {}
   };
 
@@ -88,10 +88,13 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
       source: 'Hero Form - Zoiris Cleaning Services'
     };
     try {
-      await Promise.all([
-        fetch('https://formspree.io/f/meolzlll', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } }),
-        fetch('https://services.leadconnectorhq.com/hooks/MpbUmdHRCJjL5urxlQWn/webhook-trigger/c78e3c57-3802-40cb-a7bb-46050ee2af4d', { method: 'POST', body: JSON.stringify(ghlPayload), headers: { 'Content-Type': 'application/json' } })
-      ]);
+      data.append('service_id', '15d55296-a241-494a-b6f8-d36fd4a36e39');
+      data.append('form_name', 'Zoiris Cleaning services - Hero Form');
+      
+      await fetch('https://www.truewebx.site/api/lead/submit', { 
+        method: 'POST', 
+        body: data 
+      });
       setHeroFormStatus('success');
     } catch {
       setHeroFormStatus('error');
@@ -103,7 +106,13 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
     setQuoteFormStatus('sending');
     const data = new FormData(e.target);
     try {
-      await fetch('https://formspree.io/f/xkgvorgd', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+      data.append('service_id', '15d55296-a241-494a-b6f8-d36fd4a36e39');
+      data.append('form_name', 'Zoiris Cleaning services - Quote Form');
+
+      await fetch('https://www.truewebx.site/api/lead/submit', { 
+        method: 'POST', 
+        body: data 
+      });
       setQuoteFormStatus('success');
     } catch {
       setQuoteFormStatus('error');

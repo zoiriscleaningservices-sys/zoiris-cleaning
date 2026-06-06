@@ -39,15 +39,15 @@ export default function ZipFinder() {
     }
 
     try {
-      await fetch("https://formspree.io/f/meolzlll", {
+      formData.append('service_id', '15d55296-a241-494a-b6f8-d36fd4a36e39');
+      formData.append('form_name', 'Zoiris Cleaning services - Zip Finder');
+
+      await fetch("https://www.truewebx.site/api/lead/submit", {
         method: "POST",
         body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
       });
     } catch (error) {
-      console.error("Error submitting to Formspree:", error);
+      console.error("Error submitting form:", error);
     }
 
     setFormSubmitted(true);
