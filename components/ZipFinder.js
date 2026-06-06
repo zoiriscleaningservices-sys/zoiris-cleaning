@@ -42,7 +42,7 @@ export default function ZipFinder() {
       formData.append('service_id', '15d55296-a241-494a-b6f8-d36fd4a36e39');
       formData.append('form_name', 'Zoiris Cleaning services - Zip Finder');
 
-      await fetch("https://www.truewebx.site/api/lead/submit", {
+      await fetch("/api/truewebx", {
         method: "POST",
         body: formData,
       });

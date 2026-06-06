@@ -91,10 +91,11 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
       data.append('service_id', '15d55296-a241-494a-b6f8-d36fd4a36e39');
       data.append('form_name', 'Zoiris Cleaning services - Hero Form');
       
-      await fetch('https://www.truewebx.site/api/lead/submit', { 
+      const res = await fetch('/api/truewebx', { 
         method: 'POST', 
         body: data 
       });
+      if (!res.ok) throw new Error('Network response was not ok');
       setHeroFormStatus('success');
     } catch {
       setHeroFormStatus('error');
@@ -109,10 +110,11 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
       data.append('service_id', '15d55296-a241-494a-b6f8-d36fd4a36e39');
       data.append('form_name', 'Zoiris Cleaning services - Quote Form');
 
-      await fetch('https://www.truewebx.site/api/lead/submit', { 
+      const res = await fetch('/api/truewebx', { 
         method: 'POST', 
         body: data 
       });
+      if (!res.ok) throw new Error('Network response was not ok');
       setQuoteFormStatus('success');
     } catch {
       setQuoteFormStatus('error');
