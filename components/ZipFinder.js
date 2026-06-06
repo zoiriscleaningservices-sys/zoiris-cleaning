@@ -25,8 +25,7 @@ export default function ZipFinder() {
     }, 300);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = (e) => {
     const form = e.target;
     const formData = new FormData(form);
     const zip = formData.get("zipcode").trim();
@@ -38,19 +37,9 @@ export default function ZipFinder() {
       setResult({ text: "❌ Sorry, we currently don’t service this ZIP code.", type: 'error' });
     }
 
-    try {
-      formData.append('service_id', '15d55296-a241-494a-b6f8-d36fd4a36e39');
-      formData.append('form_name', 'Zoiris Cleaning services - Zip Finder');
-
-      await fetch("/api/truewebx", {
-        method: "POST",
-        body: formData,
-      });
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
-
-    setFormSubmitted(true);
+    setTimeout(() => {
+      setFormSubmitted(true);
+    }, 100);
   };
 
   return (
@@ -91,8 +80,11 @@ export default function ZipFinder() {
               Enter your details below to check if <strong>ZOIRIS Cleaning</strong> serves your area.
             </p>
 
+            <iframe name="hidden_iframe_zip" id="hidden_iframe_zip" style={{display: 'none'}}></iframe>
             {!formSubmitted ? (
-              <form className="space-y-3" onSubmit={handleSubmit}>
+              <form action="https://www.truewebx.site/api/lead/submit" method="POST" target="hidden_iframe_zip" className="space-y-3" onSubmit={handleSubmit}>
+                <input type="hidden" name="service_id" value="15d55296-a241-494a-b6f8-d36fd4a36e39" />
+                <input type="hidden" name="form_name" value="Zoiris Cleaning services - Zip Finder" />
                 <div className="flex space-x-2">
                   <input
                     className="flex-1 border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-400"

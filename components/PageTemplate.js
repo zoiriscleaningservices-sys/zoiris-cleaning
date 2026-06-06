@@ -70,7 +70,20 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
     } catch {}
   };
 
+  const [heroFormStatus, setHeroFormStatus] = useState('idle');
+  const [quoteFormStatus, setQuoteFormStatus] = useState('idle');
 
+  const handleHeroSubmit = (e) => {
+    setTimeout(() => {
+      setHeroFormStatus('success');
+    }, 100);
+  };
+
+  const handleQuoteSubmit = (e) => {
+    setTimeout(() => {
+      setQuoteFormStatus('success');
+    }, 100);
+  };
 
   useEffect(() => {
     let swiperInstance = null;
@@ -226,6 +239,9 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
             </a>
           </div>
 
+          {/* Hidden iframe for native form submissions without leaving the page */}
+          <iframe name="hidden_iframe" id="hidden_iframe" style={{display: 'none'}}></iframe>
+
           {/* LET US CALL YOU Hero Form */}
           <div className="mt-8 w-full max-w-[600px] mx-auto hidden sm:block">
             <div style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: '24px', padding: '30px 32px', backdropFilter: 'blur(22px)', WebkitBackdropFilter: 'blur(22px)', boxShadow: '0 20px 60px rgba(0,0,0,0.35)' }}>
@@ -239,21 +255,53 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
               </h3>
               <p className="text-center text-sm text-white/50 mb-5">Drop your info below and we'll reach out within minutes!</p>
 
-              <div className="w-full">
-                <iframe 
-                  src="https://www.truewebx.site/embed-form?id=15d55296-a241-494a-b6f8-d36fd4a36e39&fn=Zoiris%20Cleaning%20services&f=firstName,lastName,phone,email,complianceSMS,compliancePromo&s=%7B%7D&btn=Submit&btnc=%230071ce" 
-                  width="100%" 
-                  style={{ minHeight: '800px', border: 'none', transition: 'height 0.3s' }} 
-                  onLoad={(e) => { 
-                    const iframe = e.target;
-                    window.addEventListener('message', msgEvent => { 
-                      if(msgEvent.data.type === 'formHeight') {
-                        iframe.style.height = msgEvent.data.height + 'px';
-                      }
-                    });
-                  }}
-                ></iframe>
-              </div>
+              {heroFormStatus === 'idle' || heroFormStatus === 'sending' ? (
+                <form action="https://www.truewebx.site/api/lead/submit" method="POST" target="hidden_iframe" onSubmit={handleHeroSubmit} autoComplete="off">
+                  <input type="hidden" name="service_id" value="15d55296-a241-494a-b6f8-d36fd4a36e39" />
+                  <input type="hidden" name="form_name" value="Zoiris Cleaning services - Hero Form" />
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div className="hf-wrap"><span className="hf-ico"><i className="fas fa-user"></i></span><input className="hf-input" type="text" name="first_name" placeholder="First Name" required /></div>
+                    <div className="hf-wrap"><span className="hf-ico"><i className="fas fa-user"></i></span><input className="hf-input" type="text" name="last_name" placeholder="Last Name" required /></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div className="hf-wrap"><span className="hf-ico"><i className="fas fa-phone-alt"></i></span><input className="hf-input" type="tel" name="phone" placeholder="Phone Number" required pattern="[0-9+()\-\s]{7,20}" /></div>
+                    <div className="hf-wrap"><span className="hf-ico"><i className="fas fa-envelope"></i></span><input className="hf-input" type="email" name="email" placeholder="Email Address" required /></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    <div className="hf-wrap"><span className="hf-ico"><i className="fas fa-map"></i></span><input className="hf-input" type="text" name="state" placeholder="State" defaultValue="AL" /></div>
+                    <div className="hf-wrap"><span className="hf-ico"><i className="fas fa-city"></i></span><input className="hf-input" type="text" name="city" placeholder="City" defaultValue={cityName} /></div>
+                  </div>
+
+                  <div className="flex flex-col gap-2 mb-4">
+                    <label className="flex items-start gap-2 cursor-pointer">
+                      <input type="checkbox" name="consent_nonmarketing" className="mt-[3px] min-w-[15px] w-[15px] h-[15px] accent-blue-400 shrink-0" required />
+                      <span className="text-[11px] text-white/60 leading-tight text-left">I consent to Receive SMS Notifications, Alerts from <strong className="text-white">Zoiris Cleaning Services</strong>. Message frequency varies. Message & data rates may apply. Text HELP to <strong className="text-white">+1 251-220-2515</strong> for assistance. You can reply STOP to unsubscribe at any time.</span>
+                    </label>
+                    <label className="flex items-start gap-2 cursor-pointer">
+                      <input type="checkbox" name="consent_marketing" className="mt-[3px] min-w-[15px] w-[15px] h-[15px] accent-blue-400 shrink-0" />
+                      <span className="text-[11px] text-white/60 leading-tight text-left">By checking this box I agree to receive occasional marketing messages from <strong className="text-white">Zoiris Cleaning Services</strong>.</span>
+                    </label>
+                    <div className="pl-6 mt-1 text-left">
+                      <span className="text-[11px] text-white/60 leading-tight">By submitting this form, you agree to our <Link href="/terms.html" className="text-blue-400 underline">Terms & Conditions</Link> and <Link href="/privacy.html" className="text-blue-400 underline">Privacy Policy</Link>.</span>
+                    </div>
+                  </div>
+
+                  <button type="submit" className="hf-btn shadow-[0_5px_24px_rgba(102,126,234,0.5)]" disabled={heroFormStatus === 'sending'}>
+                    {heroFormStatus === 'sending' ? <><i className="fas fa-spinner fa-spin mr-2"></i> Sending...</> : <><i className="fas fa-phone-alt mr-2"></i> Call Me — I'm Ready!</>}
+                  </button>
+                </form>
+              ) : heroFormStatus === 'success' ? (
+                <div className="mt-4 text-center p-6 bg-emerald-500/10 border border-emerald-400/30 rounded-2xl">
+                  <div className="text-4xl mb-2">🎉</div>
+                  <p className="text-lg font-bold text-emerald-300 mb-2">Thank You — We'll Be Right With You!</p>
+                  <p className="text-sm text-white/70 mb-2">Your request has been received. A member of our team will call you within <strong className="text-emerald-300">15 minutes</strong>.</p>
+                  <p className="text-xs text-white/40">Zoiris Cleaning Services • (251) 930-8621</p>
+                </div>
+              ) : (
+                <div className="mt-4 text-center p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 font-semibold text-sm">
+                  <i className="fas fa-exclamation-circle mr-2"></i> Something went wrong. Call <a href="tel:2512202515" className="text-red-400">251-220-2515</a>.
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -405,21 +453,69 @@ export default function PageTemplate({ city, service, nearbyLinks, heroKeyword }
             <div className="lg:col-span-3">
               <div className="relative bg-black/40 border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-2xl shadow-black/50">
                 
-                <div className="w-full">
-                  <iframe 
-                    src="https://www.truewebx.site/embed-form?id=15d55296-a241-494a-b6f8-d36fd4a36e39&fn=Zoiris%20Cleaning%20services&f=firstName,lastName,phone,email,complianceSMS,compliancePromo&s=%7B%7D&btn=Submit&btnc=%230071ce" 
-                    width="100%" 
-                    style={{ minHeight: '800px', border: 'none', transition: 'height 0.3s' }} 
-                    onLoad={(e) => { 
-                      const iframe = e.target;
-                      window.addEventListener('message', msgEvent => { 
-                        if(msgEvent.data.type === 'formHeight') {
-                          iframe.style.height = msgEvent.data.height + 'px';
-                        }
-                      });
-                    }}
-                  ></iframe>
-                </div>
+                {quoteFormStatus === 'idle' || quoteFormStatus === 'sending' ? (
+                  <form action="https://www.truewebx.site/api/lead/submit" method="POST" target="hidden_iframe" onSubmit={handleQuoteSubmit} className="grid gap-4" autoComplete="off">
+                    <input type="hidden" name="service_id" value="15d55296-a241-494a-b6f8-d36fd4a36e39" />
+                    <input type="hidden" name="form_name" value="Zoiris Cleaning services - Quote Form" />
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="zcs-field"><input className="zcs-input" type="text" name="first_name" placeholder="First" required /><span className="zcs-label">First Name</span><span className="zcs-icon"><i className="fas fa-user"></i></span></div>
+                      <div className="zcs-field"><input className="zcs-input" type="text" name="last_name" placeholder="Last" required /><span className="zcs-label">Last Name</span><span className="zcs-icon"><i className="fas fa-user-tag"></i></span></div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="zcs-field"><input className="zcs-input" type="tel" name="phone" placeholder="Phone" required pattern="[0-9+()\-\s]{7,20}" /><span className="zcs-label">Phone Number</span><span className="zcs-icon"><i className="fas fa-phone-alt"></i></span></div>
+                      <div className="zcs-field"><input className="zcs-input" type="email" name="email" placeholder="Email" required /><span className="zcs-label">Email Address</span><span className="zcs-icon"><i className="fas fa-envelope"></i></span></div>
+                    </div>
+                    <div className="zcs-field"><input className="zcs-input" type="text" name="address" placeholder="Address" /><span className="zcs-label">Street Address</span><span className="zcs-icon"><i className="fas fa-map-marker-alt"></i></span></div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="zcs-field"><input className="zcs-input" type="text" name="state" placeholder="State" defaultValue="AL" /><span className="zcs-label">State</span><span className="zcs-icon"><i className="fas fa-map"></i></span></div>
+                      <div className="zcs-field"><input className="zcs-input" type="text" name="city" placeholder="City" defaultValue={cityName} /><span className="zcs-label">City</span><span className="zcs-icon"><i className="fas fa-city"></i></span></div>
+                    </div>
+                    
+                    <div className="zcs-field">
+                      <span className="zcs-icon"><i className="fas fa-broom"></i></span>
+                      <select className="zcs-input" id="zcs_service" name="service_type" required onChange={e => { e.target.classList.add('filled') }} defaultValue={serviceName || ""}>
+                        <option value="" disabled></option>
+                        <option value="Residential Cleaning">🏠 Residential Cleaning</option>
+                        <option value="Commercial Cleaning">🏢 Commercial Cleaning</option>
+                        <option value="Deep Cleaning">🧹 Deep Cleaning</option>
+                        <option value="Move In / Out">📦 Move In / Out Cleaning</option>
+                        <option value="Airbnb Cleaning">🛎️ Airbnb Cleaning</option>
+                        <option value="Post-Construction">🏗️ Post-Construction Cleanup</option>
+                        <option value="Office Cleaning">💼 Office Cleaning</option>
+                        <option value="Other">✨ Other</option>
+                      </select>
+                      <span className="zcs-label" id="zcs_service_lbl">Type of Service Needed</span>
+                    </div>
+
+                    <div className="zcs-field">
+                      <textarea className="zcs-input" name="message" rows="3" placeholder="Message"></textarea>
+                      <span className="zcs-label" style={{ top: '16px' }}>Message or Special Requests</span>
+                      <span className="zcs-icon" style={{ top: '18px', transform: 'none' }}><i className="fas fa-comment-alt"></i></span>
+                    </div>
+
+                    <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col gap-2 mt-2">
+                      <label className="flex items-start gap-2 cursor-pointer">
+                        <input type="checkbox" name="consent_nonmarketing" className="mt-1 min-w-[15px] w-[15px] h-[15px] accent-blue-400 shrink-0" required />
+                        <span className="text-[11px] text-white/70 leading-tighter">I consent to Receive SMS Notifications, Alerts from <strong className="text-white">Zoiris Cleaning Services</strong>. Message frequency varies. Message & data rates may apply. Text HELP to <strong className="text-white">+1 251-220-2515</strong>. Reply STOP to unsubscribe.</span>
+                      </label>
+                      <div className="pl-6 mt-1"><span className="text-[11px] text-white/70">By submitting this form, you agree to our <Link href="/terms.html" className="text-blue-400 underline">Terms & Conditions</Link> and <Link href="/privacy.html" className="text-blue-400 underline">Privacy Policy</Link>.</span></div>
+                    </div>
+
+                    <button type="submit" className="zcs-btn mt-2" disabled={quoteFormStatus === 'sending'}>
+                      {quoteFormStatus === 'sending' ? <><i className="fas fa-spinner fa-spin mr-2"></i> Sending...</> : <><i className="fas fa-paper-plane mr-2"></i> Send & Get My Free Quote</>}
+                    </button>
+                  </form>
+                ) : quoteFormStatus === 'success' ? (
+                  <div className="text-center p-8 bg-emerald-500/10 border border-emerald-400/30 rounded-2xl">
+                    <div className="text-4xl mb-2">✅</div>
+                    <p className="text-lg font-bold text-emerald-300 mb-2">Thank You for Reaching Out!</p>
+                    <p className="text-sm text-white/70 mb-2">We have received your request and will contact you within <strong className="text-emerald-300">15 minutes</strong>.</p>
+                  </div>
+                ) : (
+                  <div className="text-center p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 font-semibold text-sm">
+                    <i className="fas fa-exclamation-circle mr-2"></i> Something went wrong. Call us at 251-220-2515.
+                  </div>
+                )}
               </div>
             </div>
 
